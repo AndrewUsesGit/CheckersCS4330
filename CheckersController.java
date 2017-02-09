@@ -12,6 +12,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
@@ -71,18 +72,23 @@ public class CheckersController implements Initializable {
     public void render(){
         stackPane.getChildren().clear();
         
+        double margin;
+        
         boardWidth = scene.getWidth();
         boardHeight = scene.getHeight() - menuBar.getHeight();//allow for menu bar
-
+        
         board = new CheckerBoard(numRowCol, numRowCol, boardWidth, boardHeight, lightColor, darkColor);
+        
+        if(boardHeight>boardWidth){
+            margin = (boardHeight-boardWidth)/2;
+            StackPane.setMargin(board.getBoard(), new Insets(margin, 0, margin, 0));
+        }else{
+            margin = (boardWidth-boardHeight)/2;
+            StackPane.setMargin(board.getBoard(), new Insets(0, margin, 0, margin));
+        }
+        
         stackPane.getChildren().add(board.getBoard());
-        /*
-        CheckerBoard newBoard = new CheckerBoard(numRowCol, numRowCol, boardWidth, boardHeight, lightColor, darkColor);
-        //make sure a valid anchor pane exists
-        if(newBoard.getBoard()!= null){
-            board = newBoard;
-            stackPane.getChildren().add(board.getBoard());
-        }*/
+        
     }
     
     @FXML
