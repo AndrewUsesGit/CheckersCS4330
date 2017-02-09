@@ -12,9 +12,10 @@ import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.scene.Scene;
+import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -38,10 +39,10 @@ public class CheckersController implements Initializable {
     private Color darkColor;
     
     @FXML
-    private VBox vbox;
+    private StackPane stackPane;
     
     @FXML
-    private StackPane stackPane;
+    private MenuBar menuBar;
     
     /**
      * Initializes the controller class.
@@ -69,21 +70,25 @@ public class CheckersController implements Initializable {
     }
     
     public void render(){
-        try{//this WILL fail the first time it trys to render because the object being removed is null
-            vbox.getChildren().remove(board.getBoard());
-        }catch(Exception ex){
-            System.out.printf("%s\n", ex.toString());
+        stackPane.getChildren().clear();
+        
+        double margin;
+        
+        boardWidth = scene.getWidth();
+        boardHeight = scene.getHeight() - menuBar.getHeight();//allow for menu bar
+        
+        board = new CheckerBoard(numRowCol, numRowCol, boardWidth, boardHeight, lightColor, darkColor);
+        
+        if(boardHeight>boardWidth){
+            margin = (boardHeight-boardWidth)/2;
+            StackPane.setMargin(board.getBoard(), new Insets(margin, 0, margin, 0));
+        }else{
+            margin = (boardWidth-boardHeight)/2;
+            StackPane.setMargin(board.getBoard(), new Insets(0, margin, 0, margin));
         }
         
-        boardWidth = stage.getWidth();
-        boardHeight = stage.getHeight() - 50;//allow for menu bar
-
-        CheckerBoard newBoard = new CheckerBoard(numRowCol, numRowCol, boardWidth, boardHeight, lightColor, darkColor);
-        //make sure a valid anchor pane exists
-        if(newBoard.getBoard()!= null){
-            board = newBoard;
-            vbox.getChildren().add(board.getBoard());
-        }
+        stackPane.getChildren().add(board.getBoard());
+        
     }
     
     @FXML
