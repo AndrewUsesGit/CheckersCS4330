@@ -45,7 +45,7 @@ public class CheckerBoard {
         }else{
             squareEdge = rectHeight;
         }
-        board = build();
+        board = null;
     }
     
     public final AnchorPane build(){
@@ -83,7 +83,7 @@ public class CheckerBoard {
     
     public AnchorPane getBoard(){
         if(board == null){
-            build();
+            board = build();
             return board;
         }
         return board;
